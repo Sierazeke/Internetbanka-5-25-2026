@@ -1,6 +1,39 @@
 import java.util.Scanner;
 
 class Main {
+
+    public static float addMoney(float balance, Scanner scanner) {
+        System.out.print("How much would you like to add: ");
+        float userAdd = scanner.nextFloat(); 
+        if (userAdd > 0) { 
+            balance += userAdd;
+        }
+        else {
+            System.out.println("Please use a valid amount!");
+        }
+        return balance;
+    }
+
+    public static float withdrawMoney(float balance, Scanner scanner) {
+        System.out.print("How much would you like to withdraw: ");
+        float userWithdraw = scanner.nextFloat();
+        if (userWithdraw > 0) {
+            balance -= userWithdraw;                
+        }
+        else {
+            System.out.println("Please use a valid amount!");
+        }
+        return balance;
+    }
+
+    public static void checkBalance(float balance) {
+        System.out.println("Your balance is: " + balance);
+    }
+
+    public static void exit() {
+        System.out.println("-- Goodbye! --");
+    }
+    
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in); 
         float balance = 100; 
@@ -22,36 +55,22 @@ class Main {
 
                 // Add money to the balance
                 case 1:
-                    System.out.print("How much would you like to add: ");
-                    float userAdd = scanner.nextFloat(); 
-                    if (userAdd > 0) { 
-                        balance = balance + userAdd;
-                    }
-                    else {
-                        System.out.println("Please use a valid amount!");
-                    }
+                    balance = addMoney(balance, scanner);
                 break;
 
                 // Withdraw money from the balance
                 case 2:
-                    System.out.print("How much Awould you like to withdraw: ");
-                    float userWithdraw = scanner.nextFloat();
-                    if (userWithdraw > 0) {
-                        balance = balance - userWithdraw;                
-                    }
-                    else {
-                        System.out.println("Please use a valid amount!");
-                    }
+                    balance = withdrawMoney(balance, scanner);
                 break;
 
                 // Check the balance
                 case 3:
-                    System.out.println("Your balance is: " + balance);
+                    checkBalance(balance);
                 break;
 
                 // Exits the program
                 case 4:
-                    System.out.println("-- Goodbye! --");
+                    exit();
                 return;
 
                 // If invalid action
