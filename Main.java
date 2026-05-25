@@ -1,46 +1,70 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+
+// -------------------------------------------------------------------------------------------------------------------------
 
 class Main {
 
-    public static float addMoney(float balance, Scanner scanner) {
-        System.out.print("How much would you like to add: ");
-        float userAdd = scanner.nextFloat(); 
-        if (userAdd > 0) { 
-            balance += userAdd;
-        }
-        else {
-            System.out.println("Please use a valid amount!");
-        }
-        return balance;
-    }
+    private static ArrayList<Account> accounts = new ArrayList<>();  // List to store accounts
 
-    public static float withdrawMoney(float balance, Scanner scanner) {
-        System.out.print("How much would you like to withdraw: ");
-        float userWithdraw = scanner.nextFloat();
-        if (userWithdraw > 0) {
-            balance -= userWithdraw;                
-        }
-        else {
-            System.out.println("Please use a valid amount!");
-        }
-        return balance;
-    }
+// -------------------------------------------------------------------------------------------------------------------------
 
-    public static void checkBalance(float balance) {
-        System.out.println("Your balance is: " + balance);
-    }
-
-    public static void exit() {
-        System.out.println("-- Goodbye! --");
-    }
-    
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in); 
-        float balance = 100; 
+        Account loggedInAccount = null;
+// -------------------------------------------------------------------------------------------------------------------------
 
         System.out.println("----- Greetings! -----");
+        System.out.println("- Available options -");
+        System.out.println("1 - Create an account");
+        System.out.println("2 - Log in");
 
-        while (true) {
+        System.out.print("Please choose an option: ");
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        if (option == 1) {
+            System.out.println("Please create your account!");
+
+            System.out.print("Please enter your username: ");
+            String regUsername = scanner.nextLine();
+
+            System.out.print("Please enter your password: ");
+            String regPassword = scanner.nextLine();
+
+            Account newAccount = new Account(regUsername, regPassword, 0);
+            accounts.add(newAccount);
+            System.out.println("Your account has been created! Please log in!");
+        }
+        else if (option == 2) {
+            System.out.println("Please log in your account!");
+
+            System.out.print("Please enter your username: ");
+            String logUsername = scanner.nextLine();
+
+            System.out.print("Please enter your password: ");
+            String logPassword = scanner.nextLine();
+
+            for (Account account : accounts) {
+                if (account.getUsername().equals(logUsername) && account.getPassword().equals(logPassword)) {
+                    loggedInAccount = account;
+                    break;
+                } 
+            }
+            
+            if (loggedInAccount != null) {
+                System.out.println("Login Successful!");
+            }
+            else {
+                System.out.println("Login failed.. Try again!");
+            }
+        }
+        else {
+            System.out.println("Please choose a correct action!");
+        }
+
+// -------------------------------------------------------------------------------------------------------------------------
+        while (loggedInAccount != null) {
 
             System.out.println("- Available Actions -");
             System.out.println("1 - Add Money");
@@ -55,22 +79,26 @@ class Main {
 
                 // Add money to the balance
                 case 1:
-                    balance = addMoney(balance, scanner);
+                    System.out.print("How much would you like to deposit: ");
+                    double depositAmount = scanner.nextDouble();
+                    loggedInAccount.deposit(depositAmount);
                 break;
 
                 // Withdraw money from the balance
                 case 2:
-                    balance = withdrawMoney(balance, scanner);
+                    System.out.print("How much would you like to withdraw: ");
+                    double withdrawAmount = scanner.nextDouble();
+                    loggedInAccount.withdraw(withdrawAmount);
                 break;
 
                 // Check the balance
                 case 3:
-                    checkBalance(balance);
+                    loggedInAccount.getBalance();
                 break;
 
                 // Exits the program
                 case 4:
-                    exit();
+                    loggedInAccount.exit();
                 return;
 
                 // If invalid action
