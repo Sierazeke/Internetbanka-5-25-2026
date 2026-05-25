@@ -2,55 +2,62 @@ import java.util.Scanner;
 
 class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); // Creates a new Scanner object
-        float balance = 100; // User balance
+        Scanner scanner = new Scanner(System.in); 
+        float balance = 100; 
 
         System.out.println("----- Greetings! -----");
-        System.out.println("- Available Actions -");
-        System.out.println("1 - Add Money");
-        System.out.println("2 - Withdraw Money");
-        System.out.println("3 - Check Balance");
-        System.out.println("4 - Exit");
 
         while (true) {
+
+            System.out.println("- Available Actions -");
+            System.out.println("1 - Add Money");
+            System.out.println("2 - Withdraw Money");
+            System.out.println("3 - Check Balance");
+            System.out.println("4 - Exit");
+
             System.out.print("Input the action: ");
             int userAction = scanner.nextInt();
 
-            // Add money to the balance
-            if (userAction == 1) {
-                System.out.print("How much would you like to add: ");
-                float userAdd = scanner.nextFloat(); // Reads user input
-                if (userAdd > 0) { // Check if user writes a positive amount
-                    balance = balance + userAdd;
-                }
-                else {
-                    System.out.println("Please use a valid amount!");
-                    continue; 
-                }
-            }
+            switch (userAction) {
 
-            // Withdraw money from the balance
-            if (userAction == 2) {
-                System.out.print("How much would you like to withdraw: ");
-                float userWithdraw = scanner.nextFloat();
-                if (userWithdraw > 0) {
-                    balance = balance - userWithdraw;                
-                }
-                else {
-                    System.out.println("Please use a valid amount!");
-                    continue;
-                }
-            }
+                // Add money to the balance
+                case 1:
+                    System.out.print("How much would you like to add: ");
+                    float userAdd = scanner.nextFloat(); 
+                    if (userAdd > 0) { 
+                        balance = balance + userAdd;
+                    }
+                    else {
+                        System.out.println("Please use a valid amount!");
+                    }
+                break;
 
-            // Check the balance
-            if (userAction == 3) {
-                System.out.println("Your balance is: " + balance);
-            }
+                // Withdraw money from the balance
+                case 2:
+                    System.out.print("How much Awould you like to withdraw: ");
+                    float userWithdraw = scanner.nextFloat();
+                    if (userWithdraw > 0) {
+                        balance = balance - userWithdraw;                
+                    }
+                    else {
+                        System.out.println("Please use a valid amount!");
+                    }
+                break;
 
-            // Exits the program
-            if (userAction == 4) {
-                System.out.println("-- Goodbye! --");
-                break; // Stops the program
+                // Check the balance
+                case 3:
+                    System.out.println("Your balance is: " + balance);
+                break;
+
+                // Exits the program
+                case 4:
+                    System.out.println("-- Goodbye! --");
+                return;
+
+                // If invalid action
+                default:
+                    System.out.println("Please choose an available action!");
+                    break;
             }
         }
     }  
