@@ -1,18 +1,24 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-
-// -------------------------------------------------------------------------------------------------------------------------
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 class Main {
 
-    private static ArrayList<Account> accounts = new ArrayList<>();  // List to store accounts
+    private static ArrayList<Account> accounts = new ArrayList<>();
 
-// -------------------------------------------------------------------------------------------------------------------------
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); 
+    public static void main(String[] args) throws Exception {
+        Scanner scanner = new Scanner(System.in);
         Account loggedInAccount = null;
-// -------------------------------------------------------------------------------------------------------------------------
+
+        BufferedReader reader = new BufferedReader(new FileReader("accounts.txt"));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
+            accounts.add(new Account(parts[0], parts[1], Double.parseDouble(parts[2])));
+        }
+        reader.close();
 
         System.out.println("----- Greetings! -----");
         System.out.println("- Available options -");
@@ -34,6 +40,11 @@ class Main {
 
             Account newAccount = new Account(regUsername, regPassword, 0);
             accounts.add(newAccount);
+
+            FileWriter writer = new FileWriter("accounts.txt", true);
+            writer.write(regUsername + "," + regPassword + ",0.0\n");
+            writer.close();
+
             System.out.println("Your account has been created! Please log in!");
         }
         else if (option == 2) {
@@ -49,9 +60,9 @@ class Main {
                 if (account.getUsername().equals(logUsername) && account.getPassword().equals(logPassword)) {
                     loggedInAccount = account;
                     break;
-                } 
+                }
             }
-            
+
             if (loggedInAccount != null) {
                 System.out.println("Login Successful!");
             }
@@ -63,7 +74,6 @@ class Main {
             System.out.println("Please choose a correct action!");
         }
 
-// -------------------------------------------------------------------------------------------------------------------------
         while (loggedInAccount != null) {
 
             System.out.println("- Available Actions -");
@@ -77,35 +87,30 @@ class Main {
 
             switch (userAction) {
 
-                // Add money to the balance
                 case 1:
                     System.out.print("How much would you like to deposit: ");
                     double depositAmount = scanner.nextDouble();
                     loggedInAccount.deposit(depositAmount);
                 break;
 
-                // Withdraw money from the balance
                 case 2:
                     System.out.print("How much would you like to withdraw: ");
                     double withdrawAmount = scanner.nextDouble();
                     loggedInAccount.withdraw(withdrawAmount);
                 break;
 
-                // Check the balance
                 case 3:
                     loggedInAccount.getBalance();
                 break;
 
-                // Exits the program
                 case 4:
                     loggedInAccount.exit();
                 return;
 
-                // If invalid action
                 default:
                     System.out.println("Please choose an available action!");
                     break;
             }
         }
-    }  
+    }
 }
